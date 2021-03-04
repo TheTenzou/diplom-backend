@@ -5,3 +5,7 @@ spring:
     password: "postgres"
   jpa:
     generate-ddl: "true"
+assm:
+  app:
+    jwtSecret: "jwtAssmSecretKey"
+    jwtExpiration: "86400"
