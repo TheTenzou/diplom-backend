@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class TsodgisApplication
+class TsodGisApplication
 
 fun main(args: Array<String>) {
-	runApplication<TsodgisApplication>(*args)
+	runApplication<TsodGisApplication>(*args)
 }

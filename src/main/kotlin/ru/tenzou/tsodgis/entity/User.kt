@@ -11,7 +11,7 @@ data class User(
     val id: Long? = 0,
 
     @Column(name = "username")
-    var userName: String? = null,
+    var username: String? = null,
 
     @Column(name = "first_name")
     var firstName: String? = null,
