@@ -1,11 +1,4 @@
-package com.kotlinspringvue.backend.jwt
-
-import java.io.IOException
-
-import javax.servlet.FilterChain
-import javax.servlet.ServletException
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+package ru.tenzou.tsodgis.jwt
 
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,8 +6,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.web.filter.OncePerRequestFilter
-import ru.tenzou.tsodgis.jwt.JwtProvider
 import ru.tenzou.tsodgis.service.UserDetailsServiceImpl
+import java.io.IOException
+import javax.servlet.FilterChain
+import javax.servlet.ServletException
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 
 class JwtAuthTokenFilter : OncePerRequestFilter() {
@@ -26,7 +23,11 @@ class JwtAuthTokenFilter : OncePerRequestFilter() {
     private val userDetailsService: UserDetailsServiceImpl? = null
 
     @Throws(ServletException::class, IOException::class)
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
         try {
             val jwt = getJwt(request)
             if (jwt != null && tokenProvider!!.validateJwtToken(jwt)) {
