@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tsodgis
+    username: postgres
+    password: postgres
+
+  liquibase:
+    change-log: classpath:db.changelog/db.changelog-master.yaml
+    url: jdbc:postgresql://localhost:5432/tsodgis
+    user: postgres
+    password: postgres
