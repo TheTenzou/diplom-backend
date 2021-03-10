@@ -5,7 +5,7 @@ spring:
     password: postgres
 
   liquibase:
-    change-log: classpath:db.changelog/db.changelog-master.yaml
+    change-log: classpath:db.changelog/db.changelog-master.xml
     url: jdbc:postgresql://localhost:5432/tsodgis
     user: postgres
     password: postgres
