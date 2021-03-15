@@ -26,7 +26,7 @@ class UserServiceImpl : UserService {
     private lateinit var  passwordEncoder: BCryptPasswordEncoder
 
     override fun register(user: User): User {
-        val roleUser = roleRepository.findByName("ROLE_USER")
+        val roleUser = roleRepository.findByName("ROLE_USER").get()
         val userRoles = ArrayList<Role>()
         userRoles.add(roleUser)
 
@@ -48,8 +48,8 @@ class UserServiceImpl : UserService {
         return result
     }
 
-    override fun findByUsername(username: String): User {
-        val result = userRepository.findByUsername(username)
+    override fun findByUsername(username: String): User? {
+        val result = userRepository.findByUsername(username).orElse(null)
         logger.info("IN findByUsername - user: $result found by username $username")
         return result
     }
