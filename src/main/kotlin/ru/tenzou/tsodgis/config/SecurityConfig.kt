@@ -18,7 +18,7 @@ class SecurityConfig @Autowired constructor(
 
     companion object {
         private const val ADMIN_ENDPOINT = "/api/v1/admin/*"
-        private const val LOGIN_ENDPOINT = "/api/v1/auth/login"
+        private const val LOGIN_ENDPOINT = "/api/v1/auth/login/*"
     }
 
     @Bean

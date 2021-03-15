@@ -1,14 +1,13 @@
 package ru.tenzou.tsodgis.controller.rest
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import ru.tenzou.tsodgis.dto.AuthRequestDto
 import ru.tenzou.tsodgis.dto.AuthResponseDto
 import ru.tenzou.tsodgis.security.jwt.JwtTokenProvider
@@ -21,7 +20,11 @@ class AuthenticationRestControllerV1 @Autowired constructor(
     private val jwtTokenProvider: JwtTokenProvider,
     private val userService: UserService
 ) {
-    fun login(@RequestBody requestDto: AuthRequestDto): AuthResponseDto {
+
+    @PostMapping("/login")
+    fun login(@RequestBody requestDto: AuthRequestDto): ResponseEntity<AuthResponseDto> {
+        println(requestDto.username)
+        println(requestDto.password)
         try {
             val username = requestDto.username
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, requestDto.password))
@@ -30,7 +33,7 @@ class AuthenticationRestControllerV1 @Autowired constructor(
 
             val token = user.roles?.let { jwtTokenProvider.createToken(username, it) }
 
-            return AuthResponseDto(username, token)
+            return ResponseEntity.ok(AuthResponseDto(username, token))
         } catch (e: AuthenticationException) {
             throw BadCredentialsException("Invalid username or password")
         }
