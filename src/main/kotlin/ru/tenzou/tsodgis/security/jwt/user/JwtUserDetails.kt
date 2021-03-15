@@ -1,4 +1,4 @@
-package ru.tenzou.tsodgis.security
+package ru.tenzou.tsodgis.security.jwt.user
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
@@ -10,7 +10,7 @@ import ru.tenzou.tsodgis.entity.User
 import java.util.*
 import java.util.stream.Collectors
 
-class UserDetailsJwt(
+class JwtUserDetails(
     @JsonIgnore
     val id: Long?,
     private val username: String?,
@@ -40,7 +40,7 @@ class UserDetailsJwt(
     override fun isEnabled(): Boolean = enabled == true
 
     companion object {
-        fun create(user: User) = UserDetailsJwt(
+        fun create(user: User) = JwtUserDetails(
             user.id,
             user.username,
             user.firstName,
