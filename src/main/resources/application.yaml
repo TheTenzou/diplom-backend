@@ -9,3 +9,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/tsodgis
     user: postgres
     password: postgres
+
+jwt:
+  token:
+    secret: secret
+    expired: 3600000
