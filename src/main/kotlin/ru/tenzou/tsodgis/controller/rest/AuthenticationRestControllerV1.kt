@@ -23,8 +23,6 @@ class AuthenticationRestControllerV1 @Autowired constructor(
 
     @PostMapping("/login")
     fun login(@RequestBody requestDto: AuthRequestDto): ResponseEntity<AuthResponseDto> {
-        println(requestDto.username)
-        println(requestDto.password)
         try {
             val username = requestDto.username
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, requestDto.password))

@@ -10,7 +10,7 @@ open class BaseEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
 
     @CreatedDate
     @Column(name = "created")

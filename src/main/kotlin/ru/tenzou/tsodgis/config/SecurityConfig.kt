@@ -17,8 +17,8 @@ class SecurityConfig @Autowired constructor(
     WebSecurityConfigurerAdapter() {
 
     companion object {
-        private const val ADMIN_ENDPOINT = "/api/v1/admin/*"
-        private const val LOGIN_ENDPOINT = "/api/v1/auth/login/*"
+        private const val ADMIN_ENDPOINT = "/api/v1/admin/**"
+        private const val LOGIN_ENDPOINT = "/api/v1/auth/login"
     }
 
     @Bean
@@ -32,8 +32,8 @@ class SecurityConfig @Autowired constructor(
             ?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             ?.and()
             ?.authorizeRequests()
-            ?.antMatchers(ADMIN_ENDPOINT)?.permitAll()
-            ?.antMatchers(LOGIN_ENDPOINT)?.hasRole("ADMIN")
+            ?.antMatchers(LOGIN_ENDPOINT)?.permitAll()
+            ?.antMatchers(ADMIN_ENDPOINT)?.hasRole("ADMIN")
             ?.and()
             ?.apply(JwtConfigure(jwtTokenProvider))
     }
