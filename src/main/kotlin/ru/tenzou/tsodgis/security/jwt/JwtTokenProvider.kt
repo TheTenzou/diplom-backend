@@ -1,8 +1,7 @@
 package ru.tenzou.tsodgis.security.jwt
 
-import io.jsonwebtoken.JwtException
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.*
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -70,15 +69,26 @@ class JwtTokenProvider {
 
     fun validateToken(token: String): Boolean {
         try {
-            val claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
-            return !claims.body.expiration.before(Date())
-        } catch (e: JwtException) {
-            throw JwtAuthenticationException("JWT token is expired or invalid")
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
+            return true
+        } catch (e: SignatureException) {
+            logger.error("Invalid Jwt signature: ${e.message}")
+        } catch (e: MalformedJwtException) {
+            logger.error("Invalid Jwt token: ${e.message}")
+        } catch (e: ExpiredJwtException) {
+            logger.error("Jwt token is expired: ${e.message}")
+        } catch (e: UnsupportedJwtException) {
+            logger.error("Jwt token is unsupported: ${e.message}")
         } catch (e: IllegalArgumentException) {
-            throw JwtAuthenticationException("JWT token is expired or invalid")
+            logger.error("Jwt claims string is empty: ${e.message}")
         }
+        return false
     }
 
     private fun getRoleNames(userRoles: Collection<Role>) =
         userRoles.stream().map { it.name }.collect(Collectors.toList())
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(JwtTokenProvider::class.java)
+    }
 }
