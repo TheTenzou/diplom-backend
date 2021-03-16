@@ -7,12 +7,14 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import ru.tenzou.tsodgis.security.jwt.JwtAuthenticationEntryPoint
 import ru.tenzou.tsodgis.security.jwt.JwtConfigure
 import ru.tenzou.tsodgis.security.jwt.JwtTokenProvider
 
 @Configuration
 class SecurityConfig @Autowired constructor(
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
 ) :
     WebSecurityConfigurerAdapter() {
 
@@ -36,6 +38,6 @@ class SecurityConfig @Autowired constructor(
             .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
             .anyRequest().authenticated()
             .and()
-            .apply(JwtConfigure(jwtTokenProvider))
+            .apply(JwtConfigure(jwtTokenProvider, jwtAuthenticationEntryPoint))
     }
 }
