@@ -28,6 +28,6 @@ data class Role(
     @Column(name = "name")
     var name: String,
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    var users: Collection<User>? = null
+//    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+//    var users: Collection<User>? = null
 ) : BaseEntity()

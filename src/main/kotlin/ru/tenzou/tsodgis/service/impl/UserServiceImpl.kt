@@ -11,7 +11,6 @@ import ru.tenzou.tsodgis.entity.User
 import ru.tenzou.tsodgis.repository.RoleRepository
 import ru.tenzou.tsodgis.repository.UserRepository
 import ru.tenzou.tsodgis.service.UserService
-import kotlin.math.log
 
 @Service
 class UserServiceImpl : UserService {
