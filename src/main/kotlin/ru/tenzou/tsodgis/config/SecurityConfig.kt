@@ -26,15 +26,16 @@ class SecurityConfig @Autowired constructor(
         return super.authenticationManagerBean()
     }
 
-    override fun configure(http: HttpSecurity?) {
-        http?.httpBasic()?.disable()
-            ?.csrf()?.disable()
-            ?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            ?.and()
-            ?.authorizeRequests()
-            ?.antMatchers(LOGIN_ENDPOINT)?.permitAll()
-            ?.antMatchers(ADMIN_ENDPOINT)?.hasRole("ADMIN")
-            ?.and()
-            ?.apply(JwtConfigure(jwtTokenProvider))
+    override fun configure(http: HttpSecurity) {
+        http.httpBasic().disable()
+            .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+            .antMatchers(LOGIN_ENDPOINT).permitAll()
+            .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+            .anyRequest().authenticated()
+            .and()
+            .apply(JwtConfigure(jwtTokenProvider))
     }
 }
