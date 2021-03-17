@@ -18,22 +18,7 @@ class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
     ) {
         response.status = HttpServletResponse.SC_UNAUTHORIZED
         response.contentType = MediaType.APPLICATION_JSON_VALUE
-
-        try {
-            val exception = request.getAttribute("exception") as Exception
-            response.writer.println(exception.toString())
-            logger.error(exception.toString())
-        } catch (e: Exception) {
-
-            val message =
-                if (authException.cause != null) {
-                    authException.cause.toString() + " " + authException.message.toString()
-                } else {
-                    authException.message.toString()
-                }
-            logger.error(message)
-            response.writer.println(message)
-        }
+        logger.error("Failed to authenticate")
     }
 
     companion object {

@@ -73,21 +73,16 @@ class JwtTokenProvider {
             return true
         } catch (e: SignatureException) {
             logger.error("Invalid Jwt signature: ${e.message}")
-            throw JwtAuthenticationException("Invalid Jwt signature")
         } catch (e: MalformedJwtException) {
             logger.error("Invalid Jwt token: ${e.message}")
-            throw JwtAuthenticationException("Invalid Jwt token")
         } catch (e: ExpiredJwtException) {
             logger.error("Jwt token is expired: ${e.message}")
-            throw JwtAuthenticationException("Jwt token is expired")
         } catch (e: UnsupportedJwtException) {
             logger.error("Jwt token is unsupported: ${e.message}")
-            throw JwtAuthenticationException("Jwt token is unsupported")
         } catch (e: IllegalArgumentException) {
             logger.error("Jwt claims string is empty: ${e.message}")
-            throw JwtAuthenticationException("Jwt claims string is empty")
         }
-//        return false
+        return false
     }
 
     private fun getRoleNames(userRoles: Collection<Role>) =
