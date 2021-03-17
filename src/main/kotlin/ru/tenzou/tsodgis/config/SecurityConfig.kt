@@ -20,6 +20,7 @@ class SecurityConfig @Autowired constructor(
 
     companion object {
         private const val ADMIN_ENDPOINT = "/api/v1/admin/**"
+        private const val USER_ENDPOINT = "/api/v1/users/**"
         private const val LOGIN_ENDPOINT = "/api/v1/auth/login"
     }
 
@@ -31,13 +32,15 @@ class SecurityConfig @Autowired constructor(
     override fun configure(http: HttpSecurity) {
         http.httpBasic().disable()
             .csrf().disable()
+            .authorizeRequests()
+            .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+            .antMatchers(USER_ENDPOINT).hasAnyRole("ADMIN", "USER")
+            .antMatchers(LOGIN_ENDPOINT).permitAll().anyRequest().authenticated()
+            .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .authorizeRequests()
-            .antMatchers(LOGIN_ENDPOINT).permitAll()
-            .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
-            .anyRequest().authenticated()
+            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
             .and()
-            .apply(JwtConfigure(jwtTokenProvider, jwtAuthenticationEntryPoint))
+            .apply(JwtConfigure(jwtTokenProvider))
     }
 }
