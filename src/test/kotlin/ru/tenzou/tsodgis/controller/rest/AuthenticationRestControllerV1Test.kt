@@ -17,7 +17,6 @@ import ru.tenzou.tsodgis.dto.AuthRequestDto
 import ru.tenzou.tsodgis.entity.Role
 import ru.tenzou.tsodgis.entity.Status
 import ru.tenzou.tsodgis.entity.User
-import ru.tenzou.tsodgis.security.jwt.JwtTokenProvider
 import ru.tenzou.tsodgis.service.UserService
 
 @SpringBootTest
@@ -27,7 +26,6 @@ internal class AuthenticationRestControllerV1Test @Autowired constructor(
     val userService: UserService,
     val objectMapper: ObjectMapper,
     val passwordEncoder: BCryptPasswordEncoder,
-    val tokenProvider: JwtTokenProvider
 ) {
     @TestConfiguration
     class ControllerTestConfig {
@@ -36,8 +34,10 @@ internal class AuthenticationRestControllerV1Test @Autowired constructor(
     }
 
     @Test
-    fun `should return jwt`() {
+    fun `login with good credential`() {
+        // request
         val authRequest = AuthRequestDto("test", "pass")
+        // create user
         val user = User(
             authRequest.username, "", "", "",
             passwordEncoder.encode(authRequest.password),
@@ -45,18 +45,49 @@ internal class AuthenticationRestControllerV1Test @Autowired constructor(
         )
         user.status = Status.ACTIVE
 
+        // mock userService
         every { userService.findByUsername(user.username!!) } returns user
 
+        // send request
         mockMvc.post("/api/v1/auth/login") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(authRequest)
         }
             .andDo { print() }
+
+        // insertion
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath("$.username") { value(user.username) }
                 jsonPath("$.token") { exists() }
+            }
+    }
+
+    @Test
+    fun `login with bad credential`() {
+        // request
+        val authRequest = AuthRequestDto("test", "wrong_pass")
+        // create user
+        val user = User(
+            authRequest.username, "", "", "",
+            passwordEncoder.encode("pass"),
+            listOf(Role("ROLE_ADMIN"), Role("ROLE_USER"))
+        )
+        user.status = Status.ACTIVE
+
+        // mock userService
+        every { userService.findByUsername(user.username!!) } returns user
+
+        // send request
+        mockMvc.post("/api/v1/auth/login") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(authRequest)
+        }
+            .andDo { print() }
+        // insertion
+            .andExpect {
+                status { isUnauthorized() }
             }
     }
 }
