@@ -2,7 +2,6 @@ package ru.tenzou.tsodgis.security.jwt
 
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
-import ru.tenzou.tsodgis.security.jwt.exception.JwtAuthenticationException
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
