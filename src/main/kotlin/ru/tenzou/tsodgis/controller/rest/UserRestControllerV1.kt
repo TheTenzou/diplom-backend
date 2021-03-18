@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ru.tenzou.tsodgis.dto.UserDto
-import ru.tenzou.tsodgis.entity.User
+import ru.tenzou.tsodgis.dto.response.UserDto
 import ru.tenzou.tsodgis.service.UserService
 
 @RestController

@@ -1,4 +1,4 @@
-package ru.tenzou.tsodgis.dto
+package ru.tenzou.tsodgis.dto.response
 
 /**
  * Authentication response data transfer object

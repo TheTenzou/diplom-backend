@@ -1,4 +1,4 @@
-package ru.tenzou.tsodgis.dto
+package ru.tenzou.tsodgis.dto.response
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import ru.tenzou.tsodgis.entity.User

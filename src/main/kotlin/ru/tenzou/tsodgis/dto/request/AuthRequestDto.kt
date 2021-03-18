@@ -1,4 +1,4 @@
-package ru.tenzou.tsodgis.dto
+package ru.tenzou.tsodgis.dto.request
 
 /**
  * Authentication request data transfer object

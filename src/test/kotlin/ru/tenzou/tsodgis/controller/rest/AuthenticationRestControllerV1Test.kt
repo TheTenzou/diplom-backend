@@ -13,7 +13,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
-import ru.tenzou.tsodgis.dto.AuthRequestDto
+import ru.tenzou.tsodgis.dto.request.AuthRequestDto
 import ru.tenzou.tsodgis.entity.Role
 import ru.tenzou.tsodgis.entity.Status
 import ru.tenzou.tsodgis.entity.User

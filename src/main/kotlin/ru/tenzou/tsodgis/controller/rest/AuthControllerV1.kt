@@ -8,8 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.annotation.*
-import ru.tenzou.tsodgis.dto.AuthRequestDto
-import ru.tenzou.tsodgis.dto.AuthResponseDto
+import ru.tenzou.tsodgis.dto.request.AuthRequestDto
+import ru.tenzou.tsodgis.dto.response.AuthResponseDto
 import ru.tenzou.tsodgis.entity.User
 import ru.tenzou.tsodgis.security.jwt.JwtTokenProvider
 import ru.tenzou.tsodgis.service.UserService
