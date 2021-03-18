@@ -11,12 +11,14 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import ru.tenzou.tsodgis.entity.Role
-import ru.tenzou.tsodgis.security.jwt.exception.JwtAuthenticationException
 import java.util.*
 import java.util.stream.Collectors
 import javax.annotation.PostConstruct
 import javax.servlet.http.HttpServletRequest
 
+/**
+ * Provide utility functions for jwt interactions
+ */
 @Component
 class JwtTokenProvider {
 
@@ -37,6 +39,9 @@ class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.toByteArray())
     }
 
+    /**
+     * create token based on user an roles
+     */
     fun createToken(username: String, role: Collection<Role>): String {
         val claims = Jwts.claims().setSubject(username)
         claims["roles"] = getRoleNames(role)
@@ -52,13 +57,22 @@ class JwtTokenProvider {
             .compact()
     }
 
+    /**
+     * get authentication by token
+     */
     fun getAuthentication(token: String): Authentication {
         val userDetails = userDetailsService.loadUserByUsername(getUsername(token))
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
 
+    /**
+     * parse user name
+     */
     fun getUsername(token: String): String = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body.subject
 
+    /**
+     * get token
+     */
     fun resolveToken(request: HttpServletRequest): String? {
         val bearerToken = request.getHeader("Authorization")
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
@@ -67,6 +81,9 @@ class JwtTokenProvider {
         return null
     }
 
+    /**
+     * check if token is valid
+     */
     fun validateToken(token: String): Boolean {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
@@ -85,6 +102,9 @@ class JwtTokenProvider {
         return false
     }
 
+    /**
+     * parse roles
+     */
     private fun getRoleNames(userRoles: Collection<Role>) =
         userRoles.stream().map { it.name }.collect(Collectors.toList())
 

@@ -10,12 +10,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.annotation.*
 import ru.tenzou.tsodgis.dto.AuthRequestDto
 import ru.tenzou.tsodgis.dto.AuthResponseDto
+import ru.tenzou.tsodgis.entity.User
 import ru.tenzou.tsodgis.security.jwt.JwtTokenProvider
 import ru.tenzou.tsodgis.service.UserService
 
+/**
+ * Authentication REST controller v.1
+ */
 @RestController
 @RequestMapping("/api/v1/auth")
-class AuthenticationRestControllerV1 @Autowired constructor(
+class AuthControllerV1 @Autowired constructor(
     private val authenticationManager: AuthenticationManager,
     private val jwtTokenProvider: JwtTokenProvider,
     private val userService: UserService
@@ -24,12 +28,16 @@ class AuthenticationRestControllerV1 @Autowired constructor(
     @PostMapping("/login")
     fun login(@RequestBody requestDto: AuthRequestDto): ResponseEntity<AuthResponseDto> {
         try {
-            val username = requestDto.username
+            val username: String = requestDto.username ?: throw BadCredentialsException("No username")
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, requestDto.password))
-            val user = username?.let { userService.findByUsername(it) }
+            val user: User = userService.findByUsername(username)
                 ?: throw UsernameNotFoundException("User with username: $username not found")
 
-            val token = user.roles?.let { jwtTokenProvider.createToken(username, it) }
+            val token =
+                jwtTokenProvider.createToken(
+                    username,
+                    user.roles ?: throw BadCredentialsException("User don't have privileges")
+                )
 
             return ResponseEntity.ok(AuthResponseDto(username, token))
         } catch (e: AuthenticationException) {

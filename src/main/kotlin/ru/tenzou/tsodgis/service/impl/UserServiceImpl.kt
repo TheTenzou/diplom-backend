@@ -12,6 +12,9 @@ import ru.tenzou.tsodgis.repository.RoleRepository
 import ru.tenzou.tsodgis.repository.UserRepository
 import ru.tenzou.tsodgis.service.UserService
 
+/**
+ * user service
+ */
 @Service
 class UserServiceImpl : UserService {
 

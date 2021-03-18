@@ -5,25 +5,12 @@ import org.springframework.data.annotation.LastModifiedDate
 import java.util.*
 import javax.persistence.*
 
+/**
+ * User role
+ */
 @Entity
 @Table(name = "roles")
 data class Role(
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    val long: Long? = null,
-//
-//    @CreatedDate
-//    @Column(name = "created")
-//    var created: Date? = null,
-//
-//    @LastModifiedDate
-//    @Column(name = "updated")
-//    var updated: Date? = null,
-//
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "status")
-//    var status: Status? = null
 
     @Column(name = "name")
     var name: String,

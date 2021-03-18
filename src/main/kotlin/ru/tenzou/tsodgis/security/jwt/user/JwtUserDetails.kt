@@ -10,19 +10,32 @@ import ru.tenzou.tsodgis.entity.User
 import java.util.*
 import java.util.stream.Collectors
 
+/**
+ * user details for jwt authentication
+ */
 class JwtUserDetails(
+
     @JsonIgnore
     val id: Long?,
+
     private val username: String?,
+
     val firstName: String?,
+
     val lastName: String?,
+
     @JsonIgnore
     private val password: String?,
+
     val email: String?,
+
     private val enabled: Boolean?,
+
     @JsonIgnore
     val lastPasswordResetDate: Date?,
+
     private val authority: MutableCollection<out GrantedAuthority>?,
+
 ) : UserDetails {
     
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>? = authority

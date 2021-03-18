@@ -11,6 +11,9 @@ import ru.tenzou.tsodgis.security.jwt.JwtAuthenticationEntryPoint
 import ru.tenzou.tsodgis.security.jwt.JwtConfigure
 import ru.tenzou.tsodgis.security.jwt.JwtTokenProvider
 
+/**
+ * Конфигурация безопасности.
+ */
 @Configuration
 class SecurityConfig @Autowired constructor(
     private val jwtTokenProvider: JwtTokenProvider,

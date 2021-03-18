@@ -3,6 +3,9 @@ package ru.tenzou.tsodgis.dto
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import ru.tenzou.tsodgis.entity.User
 
+/**
+ * User data transfer object
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class UserDto(
     var id: Long?,

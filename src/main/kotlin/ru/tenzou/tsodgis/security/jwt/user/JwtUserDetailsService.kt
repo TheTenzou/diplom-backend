@@ -9,8 +9,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import ru.tenzou.tsodgis.service.UserService
 
+/**
+ * jwt user details service
+ */
 @Service
-class JwtUserDetailsService @Autowired constructor(private val userService: UserService) : UserDetailsService {
+class JwtUserDetailsService @Autowired constructor(
+    private val userService: UserService
+) : UserDetailsService {
 
     override fun loadUserByUsername(username: String?): UserDetails {
         val user = username?.let { userService.findByUsername(it) }

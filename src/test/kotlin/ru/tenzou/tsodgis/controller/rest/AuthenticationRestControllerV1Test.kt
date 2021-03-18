@@ -1,7 +1,6 @@
 package ru.tenzou.tsodgis.controller.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
@@ -13,10 +12,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.post
 import ru.tenzou.tsodgis.dto.AuthRequestDto
-import ru.tenzou.tsodgis.dto.AuthResponseDto
 import ru.tenzou.tsodgis.entity.Role
 import ru.tenzou.tsodgis.entity.Status
 import ru.tenzou.tsodgis.entity.User
@@ -59,6 +56,7 @@ internal class AuthenticationRestControllerV1Test @Autowired constructor(
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath("$.username") { value(user.username) }
+                jsonPath("$.token") { exists() }
             }
     }
 }

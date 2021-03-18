@@ -1,5 +1,16 @@
 package ru.tenzou.tsodgis.entity
 
+/**
+ * status define whether row considered to be deleted or not
+ */
 enum class Status {
-    ACTIVE, NOT_ACTIVE, DELETED
+    /**
+     * row isn't deleted
+     */
+    ACTIVE,
+
+    /**
+     * row deleted
+     */
+    DELETED
 }
