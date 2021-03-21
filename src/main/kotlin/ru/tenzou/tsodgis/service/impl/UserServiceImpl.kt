@@ -3,6 +3,8 @@ package ru.tenzou.tsodgis.service.impl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import ru.tenzou.tsodgis.entity.Role
@@ -44,9 +46,9 @@ class UserServiceImpl : UserService {
         return registeredUser
     }
 
-    override fun getAll(): List<User> {
-        val result = userRepository.findAll()
-        logger.info("IN getAll - ${result.size} users found")
+    override fun getAll(pageable: Pageable): Page<User> {
+        val result = userRepository.findAll(pageable)
+        logger.info("IN getAll - ${result.totalElements} users found")
         return result
     }
 

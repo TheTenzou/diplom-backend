@@ -58,6 +58,8 @@ internal class AdminRestControllerV1Test @Autowired constructor(
     private lateinit var admin: User
     private lateinit var token: String
 
+    private lateinit var users: List<User>
+
     private val adminUsername = "admin"
     private val adminPassword = "admin"
 
@@ -81,6 +83,29 @@ internal class AdminRestControllerV1Test @Autowired constructor(
         admin.updated = Date()
 
         userRepository.save(admin)
+
+        // create Ben
+        val userBen = User(
+            "Ben", "Ben", "Smith", "BenSmith@mail.d",
+            passwordEncoder.encode("v3ryS1cretP@sw0rd"),
+            listOf(roleUser)
+        )
+        userBen.status = Status.ACTIVE
+        userBen.created = Date()
+        userBen.updated = Date()
+        userRepository.save(userBen)
+        // create Alice
+        val userAlice = User(
+            "Alice", "Alice", "Nate", "AliceNate@mail.d",
+            passwordEncoder.encode("v3ryS1cretP@sw0rd"),
+            listOf(roleUser)
+        )
+        userAlice.status = Status.ACTIVE
+        userAlice.created = Date()
+        userAlice.updated = Date()
+        userRepository.save(userAlice)
+
+        users = listOf(admin, userBen, userAlice)
 
         val authRequest = AuthRequestDto(adminUsername, adminPassword)
 
@@ -107,11 +132,10 @@ internal class AdminRestControllerV1Test @Autowired constructor(
             // when
             mockMvc.get("/api/v1/admin/user/${admin.id}") {
                 header("Authorization", "Bearer $token")
-                contentType = MediaType.APPLICATION_JSON
             }
                 .andDo { print() }
 
-            // than
+                // than
                 .andExpect {
                     status { isOk() }
                     content {
@@ -128,13 +152,44 @@ internal class AdminRestControllerV1Test @Autowired constructor(
             // when
             mockMvc.get("/api/v1/admin/user/10") {
                 header("Authorization", "Bearer $token")
-                contentType = MediaType.APPLICATION_JSON
             }
                 .andDo { print() }
 
                 // than
                 .andExpect {
                     status { isNoContent() }
+                }
+        }
+    }
+
+    @Nested
+    @DisplayName("get user list")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class GetListOfUsers {
+
+        @Test
+        fun `should return list of users with default size page`() {
+            //given
+            val response = AdminRestControllerV1.Response(
+                users as MutableList<User>,
+                0,
+                3,
+                1
+            )
+
+            // when
+            mockMvc.get("/api/v1/admin/users") {
+                header("Authorization", "Bearer $token")
+            }
+
+                // then
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                    content {
+                        contentType(MediaType.APPLICATION_JSON)
+                        json(objectMapper.writeValueAsString(response))
+                    }
                 }
         }
     }
