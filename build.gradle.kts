@@ -29,6 +29,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("io.mockk:mockk:1.10.4")
+    testImplementation("org.testcontainers:postgresql:1.15.2")
+    testImplementation("org.testcontainers:junit-jupiter:1.15.2")
 }
 
 tasks.withType<KotlinCompile> {
