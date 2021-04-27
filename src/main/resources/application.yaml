@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tsodgis
+    url: jdbc:postgresql://postgre:5432/tsodgis
     username: postgres
     password: postgres
 
   liquibase:
     change-log: classpath:db.changelog/db.changelog-master.xml
-    url: jdbc:postgresql://localhost:5432/tsodgis
+    url: jdbc:postgresql://postgre:5432/tsodgis
     user: postgres
     password: postgres
 

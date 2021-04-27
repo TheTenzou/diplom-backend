@@ -1,0 +1,40 @@
+version: "3.8"
+
+volumes:
+  postgre-volume:
+  pgadmin:
+
+services:
+  server:
+    container_name: tsod-gis-server
+    build: .
+    ports:
+    - "8080:8080"
+    depends_on:
+      - postgre
+    command: ./wait-for.sh postgre:5432 -- java -jar tsodgis-0.0.1-SNAPSHOT.jar
+
+  postgre:
+    image: "postgres:alpine"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tsodgis
+    expose:
+      - 5432
+    volumes:
+    - "postgre-volume:/var/lib/postgresql/data"
+#    command: ["postgres", "-c", "log_statement=all"]
+
+  pgadmin:
+    image: dpage/pgadmin4
+    volumes:
+    - pgadmin:/root/.pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@mail.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 50
+    ports:
+    - "16543:80"
+    depends_on:
+      - postgre
